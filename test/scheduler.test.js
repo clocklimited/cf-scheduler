@@ -369,6 +369,18 @@ describe('scheduler', function () {
 
     })
 
+    it('should create a query in the correct format', function (done) {
+
+      function mockFind(query) {
+        assert.deepEqual({ type: 'repair', 'data.a': 10, 'data.b': 'abc' }, query)
+        done()
+      }
+
+      var scheduler = new Scheduler({ find: mockFind }, noopLogger)
+      scheduler.find('repair', { a: 10, b: 'abc' })
+
+    })
+
   })
 
 })

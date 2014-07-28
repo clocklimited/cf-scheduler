@@ -111,9 +111,16 @@ Scheduler.prototype.complete = function (id, cb) {
 /*
  * Query the collection for jobs based on their associated 'data'
  */
-Scheduler.prototype.find = function (propertyMatches, cb) {
+Scheduler.prototype.find = function (type, propertyMatches, cb) {
 
   var query = {}
+
+  if (typeof propertyMatches === 'function') {
+    cb = propertyMatches
+    propertyMatches = type
+  } else {
+    query.type = type
+  }
 
   Object.keys(propertyMatches).forEach(function (key) {
     query['data.' + key] = propertyMatches[key]

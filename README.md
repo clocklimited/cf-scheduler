@@ -60,7 +60,7 @@ Mark a job as complete.
 - `id` is the job ID received in the `schedule()` callback
 - `cb` is a callback with signature `function (err) {}`
 
-### scheduler.find(query, cb)
+### scheduler.find(type, query, cb)
 
 Find a job based on its attached `data`. For example, if you created a job with:
 
@@ -74,6 +74,7 @@ You can retrieve it with:
 scheduler.find({ articleId: '123'}, function () {})
 ```
 
+- `type` is optional
 - `query` is an object of properties to match against the `data` attachment of the job
 - `cb` is a callback with signature `function (err, jobs) {}`
 
