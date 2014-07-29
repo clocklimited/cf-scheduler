@@ -263,6 +263,43 @@ describe('scheduler', function () {
 
     })
 
+    it('should not callback with completed jobs', function (done) {
+
+      var collection = createCollection()
+        , scheduler = new Scheduler(collection, noopLogger)
+
+      function createPastJob(type, n, cb) {
+        scheduler.schedule(type, new Date(2010, 01, 3), {}, function (err, jobId) {
+          if (err) return cb(err)
+          scheduler.complete(jobId, function (err) {
+            if (err) return cb(err)
+            cb(null, jobId)
+          })
+        })
+      }
+
+      function createFutureJob(n, cb) {
+        scheduler.schedule('repair', new Date((new Date()).getFullYear() + 5, 01, 3), {}, cb)
+      }
+
+      async.times(6, createPastJob.bind(null, 'repair'), function (err) {
+        if (err) return done(err)
+        async.times(5, createPastJob.bind(null, 'clearCache'), function (err) {
+          if (err) return done(err)
+          async.times(4, createFutureJob, function (err) {
+            if (err) return done(err)
+            scheduler.getDue('repair', function (err, jobs) {
+              if (err) return done(err)
+              assert.equal(jobs.length, 0)
+              assert.deepEqual([], jobs)
+              done()
+            })
+          })
+        })
+      })
+
+    })
+
   })
 
   describe('scheduler.getCompleted(cb)', function () {

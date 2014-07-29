@@ -52,7 +52,7 @@ Scheduler.prototype.cancel = function (id, cb) {
 Scheduler.prototype.getDue = function (type, cb) {
 
   // Create the query object
-  var query = { date: { $lt: new Date() } }
+  var query = { date: { $lt: new Date() }, complete: false }
 
   if (typeof type === 'function') {
     // If the first argument is a function, no type was is provided
