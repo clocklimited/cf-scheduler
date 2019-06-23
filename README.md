@@ -1,5 +1,7 @@
 # cf-scheduler
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/clocklimited/cf-scheduler.svg)](https://greenkeeper.io/)
+
 Schedule arbitrary jobs to be run in the future
 
 ## Installation
